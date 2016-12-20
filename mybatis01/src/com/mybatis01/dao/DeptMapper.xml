@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis01.dao.DeptMapper">
+	<!-- 设置jdbcType 说明此字段可 null
+		 不设置jdbcType 说明此字段not null
+		 jdbcType:VARCHAR(字符串)/INTEGER/DOUBLE/DATE
+	 -->
+	<insert id="addDept" parameterType="Dept">
+		insert into DEPT(DEPTNO,DNAME,LOC)
+		values(#{deptno},#{dname,jdbcType=VARCHAR},#{loc})
+	</insert>
+	<delete id="removeDept" parameterType="int">
+		delete from DEPT 
+		where DEPTNO=#{deptno}
+	</delete>
+	<update id="modifyDept" parameterType="Dept">
+		update DEPT set DNAME=#{dname},LOC=#{loc} 
+		where DEPTNO=#{deptno}
+	</update>
+	<!-- 映射结果集 -->
+	<resultMap type="Dept" id="dept-result">
+		<!-- 主键字段 -->
+		<id property="deptno" column="DEPTNO"/>
+		<!-- 其它字段 -->
+		<result property="dname" column="DNAME"/>
+		<result property="loc" column="LOC"/>
+		
+	</resultMap>
+	
+	<!-- 查询所有 (resultMap属性:引用映射结果集)-->
+	<select id="findAll" resultMap="dept-result">
+		select DEPTNO,DNAME,LOC from DEPT
+	</select>
+	
+	<!--select节点根据id查询语句
+		parameterType属性:传入参数的类型
+		resultType属性:返回类型
+	 -->
+	<select id="findById" parameterType="int" resultType="Dept">
+		select DEPTNO,DNAME,LOC from DEPT
+		where DEPTNO=#{deptno}
+	</select>
+	
+</mapper>

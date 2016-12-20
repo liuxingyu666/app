@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis01.dao.EmpMapper">
+	<!-- 设置jdbcType 说明此字段可 null
+		 不设置jdbcType 说明此字段not null
+		 jdbcType:VARCHAR(字符串)/INTEGER/DOUBLE/DATE
+	 -->
+	<insert id="addEmp" parameterType="Emp">
+		insert into EMP(EMPNO,ENAME,HIREDATE,SAL)
+		values(#{empno},#{ename,jdbcType=VARCHAR},#{hiredate},#{sal})
+	</insert>
+	<delete id="removeEmp" parameterType="int">
+		delete from EMP 
+		where EMPNO=#{empno}
+	</delete>
+	<update id="modifyEmp" parameterType="Emp">
+		update EMP set ENAME=#{ename},HIREDATE=#{hiredate},SAL=#{sal} 
+		where EMPNO=#{empno}
+	</update>
+	<!-- 映射结果集 -->
+	<resultMap type="Emp" id="emp-result">
+		<!-- 主键字段 -->
+		<id property="empno" column="EMPNO"/>
+		<!-- 其它字段 -->
+		<result property="ename" column="ENAME"/>
+		<result property="hiredate" column="HIREDATE"/>
+		<result property="sal" column="SAL"/>
+	</resultMap>
+	
+	<!-- 查询所有 (resultMap属性:引用映射结果集)-->
+	<select id="findAllEmp" resultMap="emp-result">
+		select EMPNO,ENAME,HIREDATE,SAL from EMP
+	</select>
+	
+	<!--select节点根据id查询语句
+		parameterType属性:传入参数的类型
+		resultType属性:返回类型
+	 -->
+	  <select id="findByIdEmp" parameterType="int" resultType="Emp">
+		select EMPNO,ENAME,HIREDATE,SAL from Emp
+		where EMPNO=#{empno}
+	</select>
+</mapper>
